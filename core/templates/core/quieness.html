@@ -1,0 +1,139 @@
+<!-- <!DOCTYPE html> -->
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="{% static 'core/img/logo.png' %}" />
+    <title>¿Quienes somos?</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script>
+ 
+    $(document).ready(function(){
+        $("#msg").hide();
+        $("#PedirClima").click(function(){
+ 
+ 
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(showPosition);
+                } else { 
+                    console.log("Geolocation is not supported by this browser.");
+            }
+        })
+        function showPosition(position) {
+            //console.log("Latitude: " + position.coords.latitude + " Longitude: " + position.coords.longitude);
+            var lat = position.coords.latitude;
+            var lon = position.coords.longitude;
+            var urlBase = "https://www.metaweather.com/api/location/search/?lattlong="
+            var urlFormateada = `${urlBase}${lat},${lon}`;
+            console.log(urlFormateada);
+            $.get(urlFormateada,function(Listadelugares){
+                var urlWoeid = "https://www.metaweather.com/api/location/".concat(Listadelugares[0].woeid);
+                console.log(Listadelugares[0].woeid)
+                console.log(urlWoeid)
+                $.get(urlWoeid,function(tiempo){
+                    console.log(tiempo.consolidated_weather[0])
+                    var maxTemp = Math.round(tiempo.consolidated_weather[0].the_temp)
+                    console.log(maxTemp)
+                    //weather_state_abbr
+                    var urlIcono = 
+"https://www.metaweather.com/".concat("/static/img/weather/ico/"+tiempo.consolidated_weather[0].weather_state_abbr+".ico")
+                    console.log(urlIcono)
+                    var mensaje = `<div><img src="${urlIcono}">${maxTemp}°C</div>`
+                    $("#Mensaje").append(mensaje);
+                })
+            })
+            //$("#msg").show();
+            //$("#Mensaje").append(mensaje);
+ 
+    }
+    })
+ 
+ 
+ 
+    </script>
+</head>
+<body>
+    <!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rayo</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+  <link rel="stylesheet" href="{% static 'core/styles/style.css' %}" />
+</head>
+
+<body>
+  <header>
+    <div role="navigation">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <img height="50px" src="{% static 'core/img/logo.png' %}" alt="Logo" />
+          <a class="navbar-brand" href="{% url 'index' %}">Rayo Makween</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Inicio</a>
+              </li>
+             
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                  Nuestros ingenieros
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="{% url 't1' %}">Miguel M.</a></li>
+                  <li><a class="dropdown-item" href="{% url 't2' %}">Karol L.</a></li>
+                  <li><a class="dropdown-item" href="{% url 't3' %}">Mauricio P.</a></li>
+                </ul>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'login' %}">Iniciar Sesion</a>
+              </li>
+              </li>
+              <button id="PedirClima" class="btn btn-dark">Pedir Clima</button>
+              <div id="Mensaje">
+         
+              </div>
+
+
+          </div>
+
+          </li>
+          </ul>
+        </div>
+        <!-- <form class="d-flex"> -->
+          <!-- <input class="form-control me-2" type="search" placeholder="Busqueda" aria-label="Buscar"> -->
+          <!-- <button class="btn btn-outline-success" type="submit">Buscar</button> -->
+        <!-- </form> -->
+    </div>
+    </div>
+    </nav>
+    </div>
+   </header>
+
+  <h3> . </h3>
+  <h3> . </h3>
+  <h1 style="text-align: center;">¿Quienes somos? </h1>
+  <br>
+  <p style="text-align: center;"> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod consequat leo, non porta arcu semper vel. Quisque facilisis aliquam ante vel maximus. Duis hendrerit id est vitae laoreet. Maecenas vitae aliquet turpis. Vivamus tincidunt egestas mollis. Aenean vulputate neque a venenatis tristique. Pellentesque in arcu tristique, fermentum tellus ac, fringilla nisl. Integer eget lorem et quam mollis ultrices. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc aliquam nibh nisi, ac pretium arcu consequat eget. Vivamus turpis turpis, ultrices pulvinar sagittis eu, lacinia bibendum nulla. Aliquam ornare ut velit sed bibendum. Phasellus vel odio ipsum. Sed rutrum nisl turpis, non congue turpis condimentum nec. Cras maximus risus at nisi luctus ultricies. Mauris mi mi, egestas ac orci nec, elementum vestibulum leo.
+
+    Phasellus sit amet bibendum lacus. Sed ut mi cursus, commodo metus eu, fermentum orci. Duis placerat libero eu tincidunt fermentum. Sed sed justo nibh. Vestibulum ex libero, sagittis quis consequat quis, facilisis et ante. Maecenas venenatis laoreet semper. Vivamus vestibulum at enim eget tincidunt. Curabitur accumsan fermentum eros, vitae bibendum nunc rhoncus eget. Pellentesque feugiat ex non lacus pulvinar bibendum quis in velit. Duis faucibus consequat urna. Fusce fermentum eget mi non feugiat. Etiam vehicula gravida neque convallis luctus. Quisque vitae nulla sit amet ex dictum ullamcorper. Mauris posuere faucibus mi, sed efficitur metus consequat varius. Maecenas luctus erat quis velit convallis, et gravida elit iaculis.
+    
+    Quisque iaculis, massa sed eleifend volutpat, libero velit consectetur ipsum, pulvinar varius turpis dui quis felis. Suspendisse convallis commodo convallis. Vivamus aliquet diam vitae nisi luctus finibus. Cras lacinia gravida augue. Nam ullamcorper nec libero in tincidunt. Aenean at erat ex. Sed ac gravida risus. Proin elementum justo leo, molestie rutrum odio egestas ut. In non neque sed nisi aliquam tempor. Integer volutpat congue risus. Donec posuere non felis in vehicula.
+    
+    Mauris vitae ante ac nunc convallis iaculis. Proin fringilla fringilla nunc, quis vestibulum tortor eleifend non. Integer sed egestas odio. Integer quis nulla et nunc finibus bibendum non sit amet leo. Donec finibus venenatis ligula. Sed pulvinar sollicitudin felis, eget tincidunt ipsum sodales id. Donec posuere dui quis magna iaculis mattis.
+    
+    Cras rhoncus elit ac convallis volutpat. Nullam congue nec mi molestie posuere. Praesent efficitur mauris semper porta scelerisque. Mauris nec luctus turpis. Ut non mollis ipsum. Vestibulum et fringilla velit. Nunc eget aliquam dui. Quisque et congue urna, non dignissim sapien. </p>
+    
+</body>
+</html>
